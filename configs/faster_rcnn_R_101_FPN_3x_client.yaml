@@ -1,0 +1,24 @@
+_BASE_: "Base-RCNN-FPN.yaml"
+MODEL:
+  WEIGHTS: "detectron2://COCO-Detection/faster_rcnn_R_101_FPN_3x/137851257/model_final_f6e8b1.pkl"
+  MASK_ON: False
+  RESNETS:
+    DEPTH: 101
+  ROI_HEADS:
+    BATCH_SIZE_PER_IMAGE: 128
+    NUM_CLASSES: 2  # Table and Table Header
+DATASETS:
+  TRAIN: ("tables_train",)
+  TEST: ("tables_test",)
+SOLVER:
+  BASE_LR: 0.001
+  IMS_PER_BATCH: 8
+  MAX_ITER: 20000
+  CHECKPOINT_PERIOD: 4000
+  GAMMA: 0.25
+  STEPS: (4000, 8000, 12000) # lr reduced by factor gamma after steps
+DATALOADER:
+  NUM_WORKERS: 2
+TEST:
+  EVAL_PERIOD: 200
+  DETECTIONS_PER_IMAGE: 20
